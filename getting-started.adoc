@@ -1,0 +1,174 @@
+---
+layout: docpage
+demo: "playground1.html"
+---
+
+= Começando com Realize.js
+
+== Pré-requisitos
+
+Antes de você começar a usar o Realize.js para criar *aplicações incríveis*, recomendamos algumas coisas:
+
+=== Se familiarize um pouco com o React.js
+
+O Realize.js utiliza é construido sobre o framework http://sss[React.js] desenvolvido pelo Facebook, o que nos proporciona uma enorme flexibilidade e controle quando falamos de front-end.
+
+A maior vantagem que vemos no uso do React é que podemos encapsular todo o comportamento e apresentação de um componente "de tela" em um único local e de forma organizada, podendo focar no que realmente é importante.
+
+A documentação do React é bem extensa e cobre praticamente tudo que você precisa saber para começar a criar aplicações rapidamente e embora você *não precise ser um expert* em React para utilizar o Realize.js, um conhecimento dos conceitos básicos irá lhe ajudar muito!
+
+=== Escolha seu gestor de pacotes
+
+Você pode obter o Realize.js pelo http://bower.io[Bower] ou como um https://www.npmjs.com/package/realize-js[pacote node], que você pode usar em conjunto com o Webpack ou Browserify, por exemplo.
+
+==== Bower + Grunt
+
+Assumimos que você possui o Bower, o Grunt e suas dependências instalados. Caso não tenha, siga os guias em:
+
+* http://bower.io/#getting-started
+* http://gruntjs.com/getting-started
+
+Com ambos instalados, comece inicializando o bower. Abra seu terminal e execute os comandos abaixo:
+
+[source, bash]
+----
+$ bower init
+? name: realize-bower # <1>
+? version: 0.0.1
+? description: Using Realize.js with bower // <2>
+? main file: app.js // <3>
+? what types of modules does this package expose? // <4>
+❯◉ globals
+...
+----
+<1> forneça o nome da sua app
+<2> e uma descrição
+<3> determine o nome do arquivo que será gerado
+
+Em seguida, adicione o Realize.js
+[source, bash]
+$ bower install realize-js --save
+
+Seu arquivo {code_ref_s}bower.json{code_ref_e} deve se parecer com o conteúdo abaixo:
+
+[source, javascript]
+----
+{
+  "name": "realize-bower",
+  "version": "0.0.1",
+  "authors": [
+    "Ariel Lindgren <ariel@wkm.com.br>"
+  ],
+  "description": "Using Realize.js with bower",
+  "main": "app.js",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "realize-js": "~0.9.0"
+  }
+}
+----
+
+Ao final deste processo, você estará com todas as dependências necessárias instaladas na sua aplicação. Agora basta criar uma tarefa do Grunt para consolidar todos esses recursos.
+
+Para tal, vamos começar declarando exports no arquivo {code_ref_s}bower.json{code_ref_e}:
+
+[source, javascript]
+----
+{
+  "name": "realize-bower",
+  "version": "0.0.1",
+  "authors": [
+    "Ariel Lindgren <ariel@wkm.com.br>"
+  ],
+  "description": "Using Realize.js with bower",
+  "main": "app.js",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "wkm-react-frontend": "~0.9.0"
+  },
+
+  "exportsOverride": {  // <1>
+    "jquery": {
+      "js": "dist/jquery.js"
+    },
+    "jquery-serialize-object": {
+      "js": "jquery.serialize-object.js"
+    },
+    "jquery.inputmask":{
+      "js": ["dist/jquery.inputmask.bundle.js"]
+    },
+    "materialize": {
+      "js": "dist/js/materialize.js",
+      "css": "dist/css/materialize.css",
+      "fonts": ["dist/font/material-design-icons/*", "dist/font/roboto/*"]
+    },
+    "realizejs": {
+      "js": "dist/js/realize.js",
+      "css": "dist/css/realize.css"
+    },
+    "string":{
+      "js": ["dist/string.js"]
+    }
+  }
+}
+----
+<1> insira esse bloco no seu bower.json
+
+Agora é necessário configurar o Grunt. Crie um arquivo chamado {code_ref_s}package.json{code_ref_e} com o seguinte conteúdo:
+
+[source, javascript]
+----
+{
+  "name": "realize-bower", // <1>
+  "version": "0.0.1",
+  "devDependencies": { // <2>
+
+  }
+}
+----
+<1> Use o mesmo nome dado em {code_ref_s}bower.json{code_ref_e}
+<2> a fim de não fixar as versões no momento em que escrevemos a documentação, deixamos o "devDependencies" vazio e vamos adicionar as referencias pelo shell
+
+Agora execute no shell:
+
+[source, bash]
+----
+$ npm install grunt --save-dev
+# ... output do node ...
+$ npm install grunt-bower-task --save-dev
+# ... output do node ... <1>
+$ bower install <2>
+# ... output do bower
+$ grunt <3>
+----
+<1> Nesse ponto, todas as dependencias do Grunt estarão instaladas
+<2> Instala todas os pacotes descritos em {code_ref_s}bower.json{code_ref_e}
+<3> Executa a cópia dos arquivos exportados em {code_ref_s}exportsOverride{code_ref_e} do {code_ref_s}bower.json{code_ref_e}
+
+
+
+
+
+== Guias
+
+Disponibilizamos alguns guias no nosso site para você começar a implementar suas aplicações com o Realize bem rápido caso você utilize http://rubyonrails.org[Ruby on Rails] ou http://spring.io/[Spring], mas você pode utilizá-lo *com qualquer back-end que desejar*.
